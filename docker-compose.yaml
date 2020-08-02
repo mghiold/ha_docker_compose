@@ -17,7 +17,7 @@ services:
     image: homeassistant/home-assistant:latest
     env_file: ./.env
     volumes:
-      - $docker_dir/containers/ha:/config
+      - /media/shared/home/$USER/docker/containers/ha:/config
       - /etc/localtime:/etc/localtime:ro
     restart: on-failure
     network_mode: host
@@ -33,7 +33,7 @@ services:
       retries: 6
     depends_on:
       - mqtt
-#     - influxdb // Disable for now until we move to full dockerization
+#     - influxdb
 
         #adb:
         #container_name: adb
@@ -48,7 +48,7 @@ services:
         #ports:
         #- "${adb_port1}:${adb_port2}"
 
-#  watchtower:
+# watchtower:
 #   container_name: watchtower
 #   restart: on-failure
 #   image: containrrr/watchtower
@@ -70,8 +70,8 @@ services:
 #   image: linuxserver/syncthing
 #   env_file: ./.env
 #   volumes:
-#     - $docker_dir/containers/syncthing:/config
-#     - $docker_dir/containers/ha:/sync
+#     - /home/$USER/Docker/containers/syncthing:/config
+#     - /home/$USER/Docker/containers/ha:/sync
 #     - /etc/localtime:/etc/localtime:ro
 #   network_mode: host
 #   environment:
@@ -88,15 +88,15 @@ services:
       - PGID=1883
       - PUID=1883
     volumes:
-      - $docker_dir/containers/mosquitto/config:/mosquitto/config:rw
-      - $docker_dir/containers/mosquitto/data:/mosquitto/data:rw
-      - $docker_dir/mosquitto/log:/mosquitto/log:rw
+      - /media/shared/home/$USER/docker/containers/mosquitto/config:/mosquitto/config:rw
+      - /media/shared/home/$USER/docker/containers/mosquitto/data:/mosquitto/data:rw
+      - /media/shared/home/$USER/docker/containers/mosquitto/log:/mosquitto/log:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "${mqtt_port1}:${mqtt_port1}"
       - "${mqtt_port2}:${mqtt_port2}"
 
-# grafana:  //Disable for now until full dockerization
+# grafana:
 #   container_name: grafana
 #   restart: on-failure
 #   image: grafana/grafana:latest
@@ -108,13 +108,13 @@ services:
 #   ports:
 #     - "${grafana_port1}:${grafana_port2}"
 
-# influxdb:  //Disable for now until full dockerization
+# influxdb:
 #   container_name: influxdb
 #   restart: on-failure
 #   image: influxdb:latest
 #   env_file: ./.env
 #   volumes:
-#     - influxdb_data:$influx_data
+#     - influxdb_data:/var/lib/influxdb
 #     - /etc/localtime:/etc/localtime:ro
 #   ports:
 #     - "${influxdb_port1}:${influxdb_port2}"
@@ -185,7 +185,7 @@ services:
 #     - EMAIL=${email}
 #     - URL=${ha_url}
 #     - SUBDOMAINS=${subdomains}
-        #- EXTRA_DOMAINS=${extra_domains}
+#       #- EXTRA_DOMAINS=${extra_domains}
 #     - VALIDATION=http
 #     - TZ=${timezone}
 #   ports:
@@ -218,5 +218,5 @@ services:
         #- GLANCES_OPT=-w
 
 volumes:
-  influxdb_data:
   tasmoadmin_data:
+# influxdb_data:
