@@ -1,6 +1,7 @@
 .DS_Store
 .env
 .swp
+.env.swp
 containers/
 secrets/
 credentials.json
