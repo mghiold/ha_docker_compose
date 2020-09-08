@@ -88,9 +88,9 @@ services:
       - PGID=1883
       - PUID=1883
     volumes:
-      - /media/shared/home/$USER/docker/containers/mosquitto/config:/mosquitto/config:rw
-      - /media/shared/home/$USER/docker/containers/mosquitto/data:/mosquitto/data:rw
-      - /media/shared/home/$USER/docker/containers/mosquitto/log:/mosquitto/log:rw
+      - /media/shared/mosquitto/config:/mosquitto/config:rw
+      - /media/shared/mosquitto/data:/mosquitto/data:rw
+      - /media/shared/mosquitto/log:/mosquitto/log:rw
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "${mqtt_port1}:${mqtt_port1}"
