@@ -2,16 +2,6 @@ version: '3.4'
 
 services:
 
-        #esphome:
-        #container_name: esphome
-        #image: esphome/esphome:latest
-        #env_file: ./.env
-        #volumes:
-        #- /home/$USER/Docker/containers/esphome:/config:rw
-        #- /etc/localtime:/etc/localtime:ro
-        #network_mode: host
-        #restart: always
-
   homeassistant:
     container_name: ha
     image: homeassistant/home-assistant:latest
@@ -33,50 +23,6 @@ services:
       retries: 6
     depends_on:
       - mqtt
-#     - influxdb
-
-        #adb:
-        #container_name: adb
-        #restart: on-failure
-        #image: sorccu/adb
-        #env_file: ./.env
-        #command: sh -c "/config/startup.sh & /config/adb_start"
-        #volumes:
-        #- /home/$USER/Docker/containers/adb:/config
-        #- /etc/timezone:/etc/timezone:ro
-        #- /etc/localtime:/etc/localtime:ro
-        #ports:
-        #- "${adb_port1}:${adb_port2}"
-
-# watchtower:
-#   container_name: watchtower
-#   restart: on-failure
-#   image: containrrr/watchtower
-#   env_file: ./.env
-#   environment:
-#     - WATCHTOWER_NOTIFICATIONS=email
-#     - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${email}
-#     - WATCHTOWER_NOTIFICATION_EMAIL_TO=${email}
-#     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${email_server}
-#     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${email_user}
-#     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${email_pw}
-#   volumes:
-#     - /var/run/docker.sock:/var/run/docker.sock
-#   command: --debug true --cleanup true ha hasync mqtt grafana influxdb tasmoadmin dockermon letsencrypt-nginx nodered esphome
-
-# syncthing:
-#   container_name: hasync
-#   restart: on-failure
-#   image: linuxserver/syncthing
-#   env_file: ./.env
-#   volumes:
-#     - /home/$USER/Docker/containers/syncthing:/config
-#     - /home/$USER/Docker/containers/ha:/sync
-#     - /etc/localtime:/etc/localtime:ro
-#   network_mode: host
-#   environment:
-#     - PGID=${PGID}
-#     - PUID=${PUID}
 
   mqtt:
     container_name: mqtt
@@ -96,40 +42,6 @@ services:
       - "${mqtt_port1}:${mqtt_port1}"
       - "${mqtt_port2}:${mqtt_port2}"
 
-# grafana:
-#   container_name: grafana
-#   restart: on-failure
-#   image: grafana/grafana:latest
-#   env_file: ./.env
-#   volumes:
-#     - /etc/localtime:/etc/localtime:ro
-#     - /home/$USER/Docker/containers/grafana:/var/lib/grafana
-#   user: ${PUID}
-#   ports:
-#     - "${grafana_port1}:${grafana_port2}"
-
-# influxdb:
-#   container_name: influxdb
-#   restart: on-failure
-#   image: influxdb:latest
-#   env_file: ./.env
-#   volumes:
-#     - influxdb_data:/var/lib/influxdb
-#     - /etc/localtime:/etc/localtime:ro
-#   ports:
-#     - "${influxdb_port1}:${influxdb_port2}"
-
-        #tileboard:
-        #container_name: tileboard
-        #restart: on-failure
-        #image: httpd:2.4
-        #env_file: ./.env
-        #volumes:
-        #- /home/$USER/Docker/containers/tileboard:/usr/local/apache2/htdocs
-        #- /etc/localtime:/etc/localtime:ro
-        #ports:
-        #- "${tileboard_port1}:${tileboard_port2}"
-
   tasmoadmin:
     container_name: tasmoadmin
     restart: on-failure
@@ -141,82 +53,5 @@ services:
     ports:
       - "${tasmoadmin_port1}:${tasmoadmin_port2}"
 
-# netdata:
-#   container_name: netdata
-#   image: netdata/netdata
-#   env_file: ./.env
-#   restart: on-failure
-#   ports:
-#     - "${netdata_port1}:${netdata_port2}"
-#   cap_add:
-#     - SYS_PTRACE
-#   security_opt:
-#     - apparmor:unconfined
-#   volumes:
-#     - /proc:/host/proc:ro
-#     - /sys:/host/sys:ro
-#     - /var/run/docker.sock:/var/run/docker.sock:ro
-#   environment: 
-#     - PGID=${netdata_PGID}
-
-        #dockermon:
-        #container_name: dockermon
-        #restart: on-failure
-        #image: philhawthorne/ha-dockermon
-        #env_file: ./.env
-        #volumes:
-        #- /var/run/docker.sock:/var/run/docker.sock
-        #- /home/$USER/Docker/containers/dockermon:/config
-        #- /etc/localtime:/etc/localtime:ro
-        #ports:
-        #- "${dockermon_port1}:${dockermon_port2}"
-
-# letsencrypt-nginx:
-#   container_name: letsencrypt-nginx
-#   image: linuxserver/letsencrypt
-#   env_file: ./.env
-#   restart: on-failure
-#   volumes:
-#     - /etc/localtime:/etc/localtime:ro
-#     - /home/$USER/Docker/containers/letsencrypt-nginx:/config
-#   environment:
-#     - PGID=${PGID}
-#     - PUID=${PUID}
-#     - EMAIL=${email}
-#     - URL=${ha_url}
-#     - SUBDOMAINS=${subdomains}
-#       #- EXTRA_DOMAINS=${extra_domains}
-#     - VALIDATION=http
-#     - TZ=${timezone}
-#   ports:
-#     - "80:80"
-#     - "443:443"
-
-        #node-red:
-        #container_name: nodered
-        #image: nodered/node-red-docker
-        #env_file: ./.env
-        #restart: on-failure
-        #volumes:
-        #- /etc/localtime:/etc/localtime:ro
-        #- /home/$USER/Docker/containers/node-red:/data
-        #environment:
-        #- PGID=${PGID}
-        #- PUID=${PUID}
-        #ports:
-        #- "${node_red_port1}:${node_red_port2}"
-      
-        #glances:
-        #container_name: glances
-        #restart: always
-        #image: nicolargo/glances
-        #volumes:
-        #- /var/run/docker.sock:/var/run/docker.sock
-        #ports:
-        #- "${glances_port1}-${glances_port2}:${glances_port1}-${glances_port2}"
-        #environment:
-        #- GLANCES_OPT=-w
-
 volumes:
   tasmoadmin_data:
-# influxdb_data:
